@@ -1,0 +1,141 @@
+# 公共配置文件
+spring:
+  application:
+    name: mbi
+  # 默认 dev 环境
+  profiles:
+    active: dev
+  # 支持 swagger3
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  # session 配置
+  session:
+    # todo 取消注释开启分布式 session（须先配置 Redis）
+    # store-type: redis
+    # 30 天过期
+    timeout: 2592000
+  # 数据库配置
+  # todo 需替换配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mbi
+    username: #
+    password: #
+  # Redis 配置
+  # todo 需替换配置，然后取消注释
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    timeout: 5000
+  # Elasticsearch 配置
+  # todo 需替换配置，然后取消注释
+#  elasticsearch:
+#    uris: http://localhost:9200
+#    username: root
+#    password: 123456
+  # 文件上传
+  servlet:
+    multipart:
+      # 大小限制
+      max-file-size: 100MB
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  address: 0.0.0.0
+  # 可以使用netsh interface ipv4 show excludedportrange protocol=tcp看看哪些端口不能用
+  port: 8301
+  servlet:
+    context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+# 微信相关
+wx:
+  # 微信公众平台
+  # todo 需替换配置
+  mp:
+    token: xxx
+    aesKey: xxx
+    appId: xxx
+    secret: xxx
+    config-storage:
+      http-client-type: HttpClient
+      key-prefix: wx
+      redis:
+        host: 127.0.0.1
+        port: 6379
+      type: Memory
+  # 微信开放平台
+  # todo 需替换配置
+  open:
+    appId: xxx
+    appSecret: xxx
+# 对象存储
+# todo 需替换配置
+cos:
+  client:
+    accessKey: xxx
+    secretKey: xxx
+    region: xxx
+    bucket: xxx
+# 接口文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: "接口文档"
+    version: 1.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - com.mrdotxin.mbi.controller
+
+max-file-request-size: 10
+
+AI :
+  apiKey: # 你在期待什么
+  BotId: # 你在期待什么
+  example: | 
+        ```json
+        {
+          "title": {
+            "text": "趋势情况"
+          },
+          "xAxis": {
+            "type": "category",
+            "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          },
+          "yAxis": {
+            "type": "value"
+          },
+          "series": [
+            {
+              "data": [150, 230, 224, 218, 135, 147, 260],
+              "type": "line"
+            }
+          ]
+        }
+        ```
+        分析报告: 从提供的数据来看，以一周七天为时间维度，对各天对应的数值进行分析。周一数值为150，随后在周二增长至230，呈现出明显的上升趋势。周三数值为224，相较于周二略有下降，周四为218，延续了小幅度下降的态势。周五数值降至135，为一周内较低值。周六数值回升到147，周日则大幅增长至260，达到一周内的最高值。整体来看，一周内的数据增长趋势并非呈现稳定上升状态，而是有波动起伏。其中周二到周四出现了先升后降的小波动，周五降至低谷后，在周末又出现了强劲的增长。这种增长趋势可能受到多种因素影响，例如工作日和周末的不同活动模式、消费习惯等。后续可进一步收集相关影响因素的数据，以更深入地探究导致这种增长趋势变化的原因。
+
+MQ:
+  ChartGenKey: GeneratingChart
+  MBIExchange: MBIDirectExchange
+  ChartGenQueue: ChartGenQueue
